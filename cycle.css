@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+}
+
+#arrayContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 300px;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.bar {
+    background-color: #4CAF50;
+    margin: 2px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+button {
+    margin: 0 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+input[type="range"] {
+    width: 200px;
+}
+/* General container styling */
+#arrayContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 400px;
+    margin-top: 20px;
+    border: 2px solid #333;
+    padding: 10px;
+    background-color: #f4f4f4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for each bar */
+.bar {
+    display: inline-block;
+    margin: 0 2px;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    position: relative;
+    transition: height 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Label inside each bar */
+.bar-label {
+    position: absolute;
+    bottom: 5px; /* Position the text slightly above the bottom */
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    user-select: none;  /* Prevent selection of text */
+}
+
+/* Slider styling */
+#sizeSlider {
+    width: 50%;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Start and Reset button styling */
+button {
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005f73;
+}
+
+/* Reset button specific styling */
+#resetArray {
+    background-color: #f44336;
+}
+
+#resetArray:hover {
+    background-color: #c23616;
+}
+
