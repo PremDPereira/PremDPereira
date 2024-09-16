@@ -1,110 +1,135 @@
+const arrayContainer = document.getElementById('arrayContainer');
+const sizeSlider = document.getElementById('sizeSlider');
 let array = [];
-let sorting = false;
-const visualizer = document.getElementById('visualizer');
-const sortButton = document.getElementById('sort');
-const resetButton = document.getElementById('reset');
-const sizeInput = document.getElementById('arraySize');
+let arraySize = sizeSlider.value;
 
-// Generate a random array
-function generateArray(size = 30, min = 10, max = 100) {
-    array = Array.from({ length: size }, () => Math.floor(Math.random() * (max - min + 1)) + min);
-    renderArray();
+function generateArray(size) {
+    array = [];
+    arrayContainer.innerHTML = '';
+    for (let i = 0; i < size; i++) {
+        array.push(Math.floor(Math.random() * 100) + 1);
+    }
+    displayArray();
 }
 
-// Render the array as bars with numbers
-function renderArray() {
-    visualizer.innerHTML = '';
-
-    array.forEach((value) => {
+function displayArray() {
+    arrayContainer.innerHTML = '';
+    array.forEach(value => {
         const bar = document.createElement('div');
-        bar.className = 'bar';
-        bar.style.height = `${value * 3}px`; // Scale height based on value
-        bar.style.width = `${(visualizer.clientWidth / array.length) - 4}px`; // Adjust width based on container size
-        const label = document.createElement('span');
-        label.textContent = value;
-        bar.appendChild(label);
-        visualizer.appendChild(bar);
+        bar.classList.add('bar');
+        bar.style.height = `${value * 3}px`;
+        bar.style.width = `${600 / array.length}px`;
+        arrayContainer.appendChild(bar);
     });
 }
 
-// Swap two bars visually
-async function swapBars(index1, index2) {
+async function cycleSort() {
     const bars = document.querySelectorAll('.bar');
-    const bar1 = bars[index1];
-    const bar2 = bars[index2];
+    let n = array.length;
+    
+    // Cycle Sort Algorithm
+    for (let cycleStart = 0; cycleStart <= n - 2; cycleStart++) {
+        let item = array[cycleStart];
+        let pos = cycleStart;
 
-    // Swap the bar heights visually
-    const height1 = bar1.style.height;
-    const height2 = bar2.style.height;
+        // Find position where we put the element
+        for (let i = cycleStart + 1; i < n; i++) {
+            if (array[i] < item) {
+                pos++;
+            }
+        }
 
-    bar1.style.height = height2;
-    bar2.style.height = height1;
+        // If the item is already in the correct position
+        if (pos === cycleStart) continue;
 
-    // Swap the values in the array
-    [array[index1], array[index2]] = [array[index2], array[index1]];
+        // Skip duplicate elements
+        while (item === array[pos]) {
+            pos++;
+        }
 
-    // Update the bar labels to match the new values
-    const label1 = bar1.querySelector('span');
-    const label2 = bar2.querySelector('span');
-    label1.textContent = array[index1];
-    label2.textContent = array[index2];
+        // Swap the item to its correct position
+        [array[pos], item] = [item, array[pos]];
+        await updateBars(bars, pos, array[pos]);  // Visual update
 
-    await new Promise((resolve) => setTimeout(resolve, 300)); // Animation delay
-}
-
-// Selection sort with color updates
-async function selectionSort() {
-    sorting = true;
-    const bars = document.querySelectorAll('.bar');
-    const n = array.length;
-
-    for (let i = 0; i < n - 1; i++) {
-        let minIndex = i;
-        bars[minIndex].style.backgroundColor = 'green'; // Sorted element
-
-        for (let j = i + 1; j < n; j++) {
-            bars[j].style.backgroundColor = 'red'; // Current comparing element
-            await new Promise((resolve) => setTimeout(resolve, 100)); // Delay
-
-            if (array[j] < array[minIndex]) {
-                if (minIndex !== i) {
-                    bars[minIndex].style.backgroundColor = '#3498db'; // Reset previous min element
+        // Rotate the rest of the cycle
+        while (pos !== cycleStart) {
+            pos = cycleStart;
+            for (let i = cycleStart + 1; i < n; i++) {
+                if (array[i] < item) {
+                    pos++;
                 }
-                minIndex = j;
-                bars[minIndex].style.backgroundColor = 'blue'; // New min element
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 100)); // Delay
-            bars[j].style.backgroundColor = '#3498db'; // Reset compared element
-        }
+            while (item === array[pos]) {
+                pos++;
+            }
 
-        if (minIndex !== i) {
-            await swapBars(i, minIndex);
+            [array[pos], item] = [item, array[pos]];
+            await updateBars(bars, pos, array[pos]);  // Visual update
         }
-
-        bars[i].style.backgroundColor = 'green'; // Mark sorted element
     }
-
-    bars[n - 1].style.backgroundColor = 'green'; // Mark last element sorted
-    sorting = false;
 }
 
-// Start sorting
-sortButton.addEventListener('click', () => {
-    if (!sorting) {
-        selectionSort();
-    }
+// Adding a delay function to simulate animation
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Update bars with animation and a small delay
+async function updateBars(bars, pos, item) {
+    bars[pos].style.height = `${item * 3}px`;
+    bars[pos].style.backgroundColor = 'red';
+    await sleep(300);  // Delay for 300ms so changes are visible
+    bars[pos].style.backgroundColor = '#4CAF50';
+}
+
+sizeSlider.addEventListener('input', () => {
+    arraySize = sizeSlider.value;
+    generateArray(arraySize);
 });
 
-// Reset array
-resetButton.addEventListener('click', () => {
-    generateArray(parseInt(sizeInput.value, 10));
+document.getElementById('startSort').addEventListener('click', cycleSort);
+document.getElementById('resetArray').addEventListener('click', () => {
+    generateArray(arraySize);
 });
 
-// Change array size
-sizeInput.addEventListener('input', (e) => {
-    generateArray(parseInt(e.target.value, 10));
-});
+window.onload = () => generateArray(arraySize);
+function displayArray() {
+    arrayContainer.innerHTML = '';
+    array.forEach(value => {
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+        bar.style.height = `${value * 3}px`;
+        bar.style.width = `${600 / array.length}px`;
+        bar.style.position = 'relative';  // To position the text inside the bar
 
-// Initialize with default array size
-generateArray(30);
+        // Add a number label inside each bar
+        const label = document.createElement('div');
+        label.classList.add('bar-label');
+        label.innerText = value;
+        label.style.position = 'absolute';
+        label.style.bottom = '0';  // Align the text at the bottom of the bar
+        label.style.width = '100%';  // Center align text
+        label.style.textAlign = 'center';
+        label.style.color = '#fff';  // White color for better contrast
+        label.style.fontWeight = 'bold';  // Bold text for readability
+
+        bar.appendChild(label);  // Add the label to the bar
+        arrayContainer.appendChild(bar);
+    });
+}
+async function updateBars(bars, pos, item) {
+    // Update the bar height and number
+    bars[pos].style.height = `${item * 3}px`;
+    bars[pos].style.backgroundColor = 'red';
+
+    // Update the label inside the bar
+    const label = bars[pos].querySelector('.bar-label');
+    label.innerText = item;
+
+    // Add a delay for visualization
+    await sleep(300);
+
+    // Change color to indicate sorted element
+    bars[pos].style.backgroundColor = '#4CAF50';
+}
