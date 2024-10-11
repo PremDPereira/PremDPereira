@@ -1,0 +1,88 @@
+
+*{
+    text-align: center;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    text-align: center; /* Center the heading */
+}
+
+ul {
+    list-style-position: inside; /* Ensures bullets are within the list item */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center the items */
+}
+
+li {
+    text-align: center; /* Center the text inside the list item */
+}
+
+.view-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.view-button:hover {
+    background-color: #45a049;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #ddd;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+
+body {
+    text-align: center;
+    position: relative; /* Necessary for absolute positioning */
+}
+
+.view-button {
+    position: absolute; /* Position it absolutely */
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    background-color:rgb(18, 247, 1); /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Button padding */
+    text-decoration: none; /* No underline */
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+}
+
+.view-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
